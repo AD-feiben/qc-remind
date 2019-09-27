@@ -1,0 +1,30 @@
+body {
+  padding: 0;
+  max-width: 750px;
+  margin: 0 auto;
+  color: #333;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .1)
+}
+
+svg {
+  width: 22px;
+  vertical-align: top
+}
+
+.wrap {
+  padding: 10px 20px
+}
+
+h1 {
+  padding: 10px 20px;
+  margin: 0;
+  font-size: 24px;
+  color: #e71f19;
+  text-shadow: 2px 2px 2px #fff;
+  border-bottom: 2px solid #f3f3f3
+}
+
+.logo {
+  width: 30px;
+  vertical-align: middle
+}
