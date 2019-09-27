@@ -1,5 +1,5 @@
-
-url = 'https://vip.zb.plus/api/web/otc/V1_0_0/getOnlineAdList'
+l
+://vip.zb.plus/api/web/otc/V1_0_0/getOnlineAdList'
 
 mail_host = ''
 mail_user = ''
@@ -18,4 +18,5 @@ persons = [
         'payways': ['银行卡', '微信', '支付宝']
     }
 ]
+
 
