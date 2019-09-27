@@ -6,9 +6,9 @@ import logging
 import config
 
 
-def send_mail(email, mail_from, msg,):
+def send_mail(email, mail_from, msg, msg_type='plain'):
     receivers = [email]
-    message = MIMEText(msg, 'plain', 'utf-8')
+    message = MIMEText(msg, msg_type, 'utf-8')
     message['From'] = Header('【QC-Remind】' + mail_from, 'utf-8')
     message['To'] = Header(email, 'utf-8')
     message['Subject'] = Header('【QC-Remind】' + mail_from, 'utf-8')
