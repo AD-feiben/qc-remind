@@ -134,14 +134,16 @@ def task():
                 if (p.get('timestamp') is None) or (now - p.get('timestamp') > p.get('recheck') * 60):
                     mail_content += get_mail_content(otc_ad, pay_way_arr)
 
-        p['timestamp'] = now
-        send_mail(p['email'], mail_content, max_price)
+        if mail_content != '':
+            p['timestamp'] = datetime.now().timestamp()
+            send_mail(p['email'], mail_content, max_price)
 
 
 if __name__ == '__main__':
-    scheduler = BlockingScheduler()
-    scheduler.add_job(task, 'cron', hour='8-23', minute='*/1')
-    try:
-        scheduler.start()
-    except Exception as e:
-        pass
+    task()
+    # scheduler = BlockingScheduler()
+    # scheduler.add_job(task, 'cron', hour='8-23', minute='*/1')
+    # try:
+    #     scheduler.start()
+    # except Exception as e:
+    #     pass
