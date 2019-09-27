@@ -11,7 +11,7 @@ def send_mail(email, mail_from, msg,):
     message = MIMEText(msg, 'plain', 'utf-8')
     message['From'] = Header('【QC-Remind】' + mail_from, 'utf-8')
     message['To'] = Header(email, 'utf-8')
-    message['Subject'] = Header('【QC-Remind】', 'utf-8')
+    message['Subject'] = Header('【QC-Remind】' + mail_from, 'utf-8')
 
     try:
         smtp_obj = smtplib.SMTP_SSL(config.mail_host, 465)
