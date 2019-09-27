@@ -2,7 +2,7 @@
 
 BASEDIR=`pwd`
 APP_NAME=$(basename ${BASEDIR})
-MAIN_PY=sms.py
+MAIN_PY=main.py
 
 case "$1" in
   start)
