@@ -6,6 +6,12 @@ from utils import mail
 from datetime import datetime
 from apscheduler.schedulers.blocking import BlockingScheduler
 
+logging.basicConfig(
+    level=logging.ERROR,
+    filename='qc-remind.log',
+    filemode='a',
+    format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s'
+)
 persons = config.persons
 
 
