@@ -4,15 +4,22 @@ import json
 import logging
 from utils import mail
 from datetime import datetime
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.blocking import BlockingScheduler
+import argparse
 
 
-logging.basicConfig(
-    level=logging.ERROR,
-    filename='qc-remind.log',
-    filemode='a',
-    format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s'
-)
+parser = argparse.ArgumentParser()
+parser.add_argument('--log-file-prefix', help='log-file-prefix 日志文件名')
+args = parser.parse_args()
+
+print(args.log_file_prefix)
+if args.log_file_prefix is not None:
+    logging.basicConfig(
+        level=logging.WARNING,
+        filename=args.log_file_prefix,
+        filemode='a',
+        format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s'
+    )
 persons = config.persons
 
 mail_content = '''
@@ -129,7 +136,7 @@ def task():
 
 
 if __name__ == '__main__':
-    scheduler = BackgroundScheduler()
+    scheduler = BlockingScheduler()
     scheduler.add_job(task, 'cron', hour='8-23', minute='*/1')
     try:
         scheduler.start()

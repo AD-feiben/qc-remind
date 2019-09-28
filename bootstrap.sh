@@ -6,18 +6,18 @@ MAIN_PY=main.py
 
 case "$1" in
   start)
-    procedure=`ps -ef | grep -w "${BASEDIR}" | grep -w "python" | grep -v "grep" | awk '{print $2}'`
+    procedure=`ps -ef | grep -w "${BASEDIR}" | grep -w "python3" | grep -v "grep" | awk '{print $2}'`
     if [ "${procedure}" = "" ];
     then
       echo "app start ..."
       rm -f nohup.out
-      exec nohup python3 ${BASEDIR}/${MAIN_PY} --log-file-prefix=log/${APP_NAME}.log &
+      exec nohup python3 ${BASEDIR}/${MAIN_PY} --log-file-prefix ${APP_NAME}.log &
     else
                         echo "${APP_NAME} was start"
                 fi
     ;;
         run)
-    procedure=`ps -ef | grep -w "${BASEDIR}" |grep -w "python"| grep -v "grep" | awk '{print $2}'`
+    procedure=`ps -ef | grep -w "${BASEDIR}" |grep -w "python3"| grep -v "grep" | awk '{print $2}'`
                 if [ "${procedure}" = "" ];
                 then
                         echo "${APP_NAME} start ..."
@@ -28,14 +28,14 @@ case "$1" in
                 fi
                 ;;
   stop)
-    procedure=`ps -ef | grep -w "${BASEDIR}" | grep -w "python"| grep -v "grep" | awk '{print $2}'`
+    procedure=`ps -ef | grep -w "${BASEDIR}" | grep -w "python3"| grep -v "grep" | awk '{print $2}'`
                 if [ "${procedure}" = "" ];
     then
                         echo "${APP_NAME} was stop"
                 else
                         kill ${procedure}
                         sleep 2
-                        arg_procedure=`ps -ef | grep -w "${BASEDIR}" |grep -w "python"| grep -v "grep" | awk '{print $2}'`
+                        arg_procedure=`ps -ef | grep -w "${BASEDIR}" |grep -w "python3"| grep -v "grep" | awk '{print $2}'`
                         if [ "${arg_procedure}" = "" ];
                         then
                                 echo "${APP_NAME}(${procedure}) stop success"
@@ -47,7 +47,7 @@ case "$1" in
                 rm -f nohup.out
                 ;;
   status)
-    procedure=`ps -ef | grep -w "${BASEDIR}" | grep -w "python" | grep -v "grep" | awk '{print $2}'`
+    procedure=`ps -ef | grep -w "${BASEDIR}" | grep -w "python3" | grep -v "grep" | awk '{print $2}'`
                 if ["${procedure}" = ""];
     then
                 echo "${APP_NAME} not run"
