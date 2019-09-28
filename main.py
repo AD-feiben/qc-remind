@@ -4,7 +4,7 @@ import json
 import logging
 from utils import mail
 from datetime import datetime
-from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
 logging.basicConfig(
@@ -129,7 +129,7 @@ def task():
 
 
 if __name__ == '__main__':
-    scheduler = BlockingScheduler()
+    scheduler = BackgroundScheduler()
     scheduler.add_job(task, 'cron', hour='8-23', minute='*/1')
     try:
         scheduler.start()
