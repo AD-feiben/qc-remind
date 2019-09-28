@@ -1,5 +1,5 @@
-l
-://vip.zb.plus/api/web/otc/V1_0_0/getOnlineAdList'
+
+url = 'https://vip.zb.plus/api/web/otc/V1_0_0/getOnlineAdList'
 
 mail_host = ''
 mail_user = ''

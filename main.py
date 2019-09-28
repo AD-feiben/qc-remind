@@ -18,16 +18,16 @@ persons = config.persons
 mail_content = '''
 <div style="padding: 10px 20px;border-bottom: 1px solid rgba(0, 0, 0, .1);">
     <p>
-      {authentication}商家：{nick_name}
+      {authentication}商家：{nickName}
     </p>
     <p>
       价格：{price}
     </p>
     <p>
-      交易限额：{min_money} - {max_money}
+      交易限额：{minMoney} - {maxMoney}
     </p>
     <p>
-      数量：{remain_amount}
+      数量：{remainAmount}
     </p>
     <p>
       支付方式：{payways}
@@ -39,6 +39,21 @@ mail_content = '''
 
 </div>
 '''
+
+pay_way_dict = {
+    '1': '银行卡',
+    '2': '微信',
+    '3': '支付宝'
+}
+
+temp_file_obj = open('template/index.html')
+try:
+    mail_template = temp_file_obj.read()
+except Exception as e:
+    logging.error(e)
+    mail_template = ''
+finally:
+    temp_file_obj.close()
 
 
 def get_otc_data():
@@ -63,44 +78,17 @@ def get_otc_data():
 
 
 def get_mail_content(otc_ad, pay_way_arr):
-    price = otc_ad.get('price')
-    min_money = otc_ad.get('minMoney')
-    max_money = otc_ad.get('maxMoney')
+    params = otc_ad
     nick_name = otc_ad.get('nickName')
-    remain_amount = otc_ad.get('remainAmount')
-    remark = otc_ad.get('remark')
     user_type = otc_ad.get('userType')
 
-    authentication = ''
+    params['authentication'] = ''
+    params['payways'] = '， '.join(pay_way_arr)
 
     if user_type == 3:
-        nick_name = '<b style="color: #e71f19">{}</b>'.format(nick_name)
-        authentication = '认证'
-    return mail_content.format(
-        authentication=authentication,
-        nick_name=nick_name,
-        price=price,
-        min_money=min_money,
-        max_money=max_money,
-        remain_amount=remain_amount,
-        payways='， '.join(pay_way_arr),
-        remark=remark
-    )
-
-
-def send_mail(email, mail_content, price):
-    temp_file_obj = open('template/index.html')
-    try:
-        mail_template = temp_file_obj.read()
-        mail.send_mail(
-            email,
-            'QC 价格 {}'.format(price),
-            mail_template.format(mail_content),
-            'html')
-    except Exception as e:
-        logging.error(e)
-    finally:
-        temp_file_obj.close()
+        params['nickName'] = '<b style="color: #e71f19">{}</b>'.format(nick_name)
+        params['authentication'] = '认证'
+    return mail_content.format(**params)
 
 
 def task():
@@ -109,41 +97,41 @@ def task():
         return
 
     otc_ads = res.get('list')
+    max_price = otc_ads[0].get('price')
+    now = datetime.now().timestamp()
+
     for p in persons:
         mail_content = ''
-        max_price = otc_ads[0].get('price')
-        payways = p.get('payways')
+        person_payways = p.get('payways')
+        person_timestamp = p.get('timestamp')
+
+        # 距离上次发送邮件的时间，小于设置的时间，则跳过提醒
+        if (person_timestamp is not None) and (now - person_timestamp < p.get('recheck') * 60):
+            continue
 
         for otc_ad in otc_ads:
             pay_way = otc_ad.get('payWay')
             f_price = float(otc_ad.get('price'))
 
-            pay_way_dict = {
-                '1': '银行卡',
-                '2': '微信',
-                '3': '支付宝'
-            }
             pay_way_arr = []
             for pw in pay_way.split(','):
                 pay_way_arr.append(pay_way_dict[pw])
 
-            if (payways is not None) and (len([val for val in payways if val in pay_way_arr]) == 0):
+            # 用户付款方式不为空，且与广告中的付款方式不存在交集，则跳过该广告
+            if (person_payways is not None) and (len([val for val in person_payways if val in pay_way_arr]) == 0):
                 continue
             if f_price >= p['higher'] or f_price <= p['lower']:
-                now = datetime.now().timestamp()
-                if (p.get('timestamp') is None) or (now - p.get('timestamp') > p.get('recheck') * 60):
-                    mail_content += get_mail_content(otc_ad, pay_way_arr)
+                mail_content += get_mail_content(otc_ad, pay_way_arr)
 
         if mail_content != '':
-            p['timestamp'] = datetime.now().timestamp()
-            send_mail(p['email'], mail_content, max_price)
+            p['timestamp'] = now
+            mail.send_mail(p['email'], 'QC 价格 {}'.format(max_price), mail_template.format(mail_content), 'html')
 
 
 if __name__ == '__main__':
-    task()
-    # scheduler = BlockingScheduler()
-    # scheduler.add_job(task, 'cron', hour='8-23', minute='*/1')
-    # try:
-    #     scheduler.start()
-    # except Exception as e:
-    #     pass
+    scheduler = BlockingScheduler()
+    scheduler.add_job(task, 'cron', hour='8-23', minute='*/1')
+    try:
+        scheduler.start()
+    except Exception as e:
+        pass
