@@ -1,8 +1,11 @@
-## <img style="width: 40px;vertical-align: middle;" src="./assets/logo.png"/> QC-Remind
 
-![lisence](https://img.shields.io/github/license/ad-feiben/qc-remind)
-![release](https://img.shields.io/github/v/release/ad-feiben/qc-remind.svg)
+## QC-Remind
+
+![release](https://img.shields.io/github/v/release/ad-feiben/qc-remind)
+![lisence](https://img.shields.io/github/license/ad-feiben/qc-remind?logo=github)
 ![travis](https://img.shields.io/travis/ad-feiben/qc-remind?logo=travis)
+
+![logo](./assets/logo.png)
 
 因为我经常需要买卖 QC，为了避免错过最佳的交易时机，所以写了该项目，用来提醒我 QC 市场价，争取获得最大收益。
 
