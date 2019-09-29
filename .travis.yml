@@ -1,18 +1,12 @@
-matrix:
-  include:
-  - language: python
-    install: pip install -r requirements.txt
+language: python
 
-    script: python test.py
+services: docker
 
-  - language: bash
+install: pip install -r requirements.txt
 
-    dist: xenial
+script: python test.py
 
-    services: docker
-
-    before_script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stin
-
-    after_success:
-      - docker build -t feiben/qc-remind
-      - docker push feiben/qc-remind
+after_success:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - dokcer build -t feiben/qc-remind
+  - docker push feiben/qc-remind
