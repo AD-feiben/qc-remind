@@ -20,7 +20,7 @@ if args.log_file_prefix is not None:
         filemode='a',
         format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s'
     )
-persons = config.persons
+persons = config.Persons
 
 mail_content = '''
 <div style="padding: 10px 20px;border-bottom: 1px solid rgba(0, 0, 0, .1);">
@@ -76,7 +76,7 @@ def get_otc_data():
         'amountRange': 0,
         'limitRange': 0
     }
-    r = requests.get(config.url, params=params, headers=headers)
+    r = requests.get(config.URL, params=params, headers=headers)
     try:
         res = json.loads(r.text)
         return res.get('datas')

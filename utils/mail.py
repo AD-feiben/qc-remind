@@ -14,15 +14,15 @@ def send_mail(email, mail_from, msg, msg_type='plain'):
     message['Subject'] = Header('【QC-Remind】' + mail_from, 'utf-8')
 
     try:
-        smtp_obj = smtplib.SMTP_SSL(config.mail_host, 465)
+        smtp_obj = smtplib.SMTP_SSL(config.Mail_host, 465)
         smtp_obj.ehlo()
     except Exception as e:
         smtp_obj = smtplib.SMTP()
-        smtp_obj.connect(config.mail_host, 25)
+        smtp_obj.connect(config.Mail_host, 25)
 
     try:
-        smtp_obj.login(config.mail_user, config.mail_pass)
-        smtp_obj.sendmail(config.mail_user, receivers, message.as_string())
+        smtp_obj.login(config.Mail_user, config.Mail_pass)
+        smtp_obj.sendmail(config.Mail_user, receivers, message.as_string())
     except Exception as e:
         logging.error(e)
     finally:
