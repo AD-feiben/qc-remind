@@ -8,5 +8,5 @@ script: python test.py
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - dokcer build -t feiben/qc-remind
+  - docker build -t feiben/qc-remind
   - docker push feiben/qc-remind
