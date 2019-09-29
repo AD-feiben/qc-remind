@@ -1,11 +1,16 @@
+import os
 
-url = 'https://vip.zb.plus/api/web/otc/V1_0_0/getOnlineAdList'
+URL = 'https://vip.zb.plus/api/web/otc/V1_0_0/getOnlineAdList'
 
-mail_host = ''
-mail_user = ''
-mail_pass = ''
+Env_mail_host = os.environ['mail_host']
+Env_mail_user = os.environ['mail_user']
+Env_mail_pass = os.environ['mail_pass']
 
-persons = [
+Mail_host = Env_mail_host if Env_mail_host is not None else ''
+Mail_user = Env_mail_user if Env_mail_user is not None else ''
+Mail_pass = Env_mail_pass if Env_mail_pass is not None else ''
+
+Persons = [
     {
         'email': 'feiben.dev@gmail.com',
         # 小于等于该价格，发送提醒

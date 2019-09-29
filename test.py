@@ -3,10 +3,10 @@ import config
 
 
 if __name__ == '__main__':
-    if config.mail_host == '':
+    if config.Mail_host == '':
         raise Exception('mail_host is empty')
-    if config.mail_user == '':
+    if config.Mail_user == '':
         raise Exception('mail_user is empty')
-    if config.mail_pass == '':
+    if config.Mail_pass == '':
         raise Exception('mail_pass is empty')
     task()
