@@ -14,11 +14,12 @@ args = parser.parse_args()
 
 if args.log_file_prefix is not None:
     logging.basicConfig(
-        level=logging.WARNING,
+        level=logging.INFO,
         filename=args.log_file_prefix,
         filemode='a',
         format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s'
     )
+
 persons = config.Persons
 
 mail_content = '''
@@ -139,9 +140,23 @@ def task():
 
 
 if __name__ == '__main__':
+    logging.info('*' * 100)
+    logging.info('QC-Remind is running')
+    logging.info('*' * 100)
+
+    print('*' * 100)
+    print('QC-Remind is running')
+    print('*' * 100)
+
+    scheduler_config = config.Scheduler
+    hour = scheduler_config.get('hour') if scheduler_config.get('hour') is not None else '8-23'
+    minute = scheduler_config.get('minute') if scheduler_config.get('minute') is not None else '*/1'
+
     scheduler = BlockingScheduler()
-    scheduler.add_job(task, 'cron', hour='8-23', minute='*/1')
+    scheduler.add_job(task, 'cron', hour=hour, minute=minute)
     try:
         scheduler.start()
     except Exception as e:
-        pass
+        print('*' * 100)
+        print('QC-Remind was stop')
+        print('*' * 100)

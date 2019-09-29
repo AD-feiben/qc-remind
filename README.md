@@ -60,6 +60,13 @@ Persons = [
         'payways': ['银行卡', '微信', '支付宝']
     }
 ]
+
+# 定时任务运行时间
+Scheduler = {
+    'hour': '8-23',
+    'minute': '*/1'
+}
+
 ```
 
 ### 运行 & 停止
@@ -70,6 +77,12 @@ $ ./bootstrap.sh start
 
 # 停止
 $ ./bootstrap.sh stop
+```
+
+### Docker
+
+```bash
+$ docker run -dit --rm -v ~/your_path/config.py:/app/config.py feiben/qc-remind
 ```
 
 ### 运行效果

@@ -24,4 +24,8 @@ Persons = [
     }
 ]
 
-
+Scheduler = {
+    # 定时任务运行时间
+    'hour': '8-23',
+    'minute': '*/1'
+}

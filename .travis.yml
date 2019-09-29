@@ -1,3 +1,14 @@
-language: python
-install: pip install -r requirements.txt
-script: python test.py
+matrix:
+  include:
+  - language: python
+    install: pip install -r requirements.txt
+
+    script: python test.py
+
+  - language: bash
+    services: docker
+
+    before_script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stin
+    after_success:
+      - docker build -t feiben/qc-remind
+      - docker push feiben/qc-remind
