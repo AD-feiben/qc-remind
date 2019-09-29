@@ -12,7 +12,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--log-file-prefix', help='log-file-prefix 日志文件名')
 args = parser.parse_args()
 
-print(args.log_file_prefix)
 if args.log_file_prefix is not None:
     logging.basicConfig(
         level=logging.WARNING,
@@ -104,7 +103,7 @@ def task():
         return
 
     otc_ads = res.get('list')
-    max_price = otc_ads[0].get('price')
+    max_price = ''
     now = datetime.now().timestamp()
 
     for p in persons:
@@ -118,7 +117,8 @@ def task():
 
         for otc_ad in otc_ads:
             pay_way = otc_ad.get('payWay')
-            f_price = float(otc_ad.get('price'))
+            price = otc_ad.get('price')
+            f_price = float(price)
 
             pay_way_arr = []
             for pw in pay_way.split(','):
@@ -127,7 +127,10 @@ def task():
             # 用户付款方式不为空，且与广告中的付款方式不存在交集，则跳过该广告
             if (person_payways is not None) and (len([val for val in person_payways if val in pay_way_arr]) == 0):
                 continue
+
             if f_price >= p['higher'] or f_price <= p['lower']:
+                if max_price == '':
+                    max_price = price
                 mail_content += get_mail_content(otc_ad, pay_way_arr)
 
         if mail_content != '':
