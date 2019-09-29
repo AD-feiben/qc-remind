@@ -7,11 +7,11 @@ mail_pass = ''
 
 persons = [
     {
-        'email': '',
+        'email': 'feiben.dev@gmail.com',
         # 小于等于该价格，发送提醒
         'lower': 0.992,
         # 大于等于该价格，发送提醒
-        'higher': 1,
+        'higher': 0.998,
         # 发送邮件后 N 分钟内不再发送邮件
         'recheck': 5,
         # 收款方式
