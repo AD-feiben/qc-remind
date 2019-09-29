@@ -6,9 +6,13 @@ matrix:
     script: python test.py
 
   - language: bash
+
+    dist: xenial
+
     services: docker
 
     before_script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stin
+
     after_success:
       - docker build -t feiben/qc-remind
       - docker push feiben/qc-remind
