@@ -12,7 +12,7 @@ Mail_pass = Env_mail_pass if Env_mail_pass is not None else ''
 
 Persons = [
     {
-        'email': 'feiben.dev@gmail.com',
+        'email': Mail_user,
         # 小于等于该价格，发送提醒
         'lower': 0.992,
         # 大于等于该价格，发送提醒
