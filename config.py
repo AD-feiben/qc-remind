@@ -2,9 +2,9 @@ import os
 
 URL = 'https://vip.zb.plus/api/web/otc/V1_0_0/getOnlineAdList'
 
-Env_mail_host = os.environ['mail_host']
-Env_mail_user = os.environ['mail_user']
-Env_mail_pass = os.environ['mail_pass']
+Env_mail_host = os.environ.get('mail_host')
+Env_mail_user = os.environ.get('mail_user')
+Env_mail_pass = os.environ.get('mail_pass')
 
 Mail_host = Env_mail_host if Env_mail_host is not None else ''
 Mail_user = Env_mail_user if Env_mail_user is not None else ''
