@@ -4,16 +4,7 @@ services: docker
 
 install: pip install -r requirements.txt
 
-branches:
-  only:
-  - master
-
 script: python test.py
-
-after_success:
-    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    - docker build -t feiben/qc-remind .
-    - docker push feiben/qc-remind
 
 notifications:
   email:

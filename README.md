@@ -46,6 +46,9 @@ Mail_host = Env_mail_host if Env_mail_host is not None else 'email smtp'
 Mail_user = Env_mail_user if Env_mail_user is not None else 'your email'
 Mail_pass = Env_mail_pass if Env_mail_pass is not None else 'your authorization code'
 
+# 接口请求异常将会发送邮件通知
+Owner_email = Mail_user
+
 # 用户配置
 Persons = [
     {
