@@ -58,7 +58,7 @@ try:
     mail_template = temp_file_obj.read()
 except Exception as e:
     logging.error(e)
-    mail_template = ''
+    mail_template = '{}'
 finally:
     temp_file_obj.close()
 
@@ -76,8 +76,8 @@ def get_otc_data():
         'amountRange': 0,
         'limitRange': 0
     }
-    r = requests.get(config.URL, params=params, headers=headers)
     try:
+        r = requests.get(config.URL, params=params, headers=headers)
         res = json.loads(r.text)
         return res.get('datas')
     except Exception as e:
