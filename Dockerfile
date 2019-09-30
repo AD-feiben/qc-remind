@@ -9,4 +9,4 @@ RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' >/etc/timezone \
     && pip install -r requirements.txt
 
-CMD ["python", "main.py"]
+CMD ["python", "main.py", "--log-file-prefix", "qc-remind.log"]

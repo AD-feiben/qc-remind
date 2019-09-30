@@ -88,6 +88,19 @@ $ ./bootstrap.sh stop
 $ docker run -dit --rm -v ~/your_path/config.py:/app/config.py feiben/qc-remind
 ```
 
+查看日志
+
+```bash
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS               NAMES
+7c51baf5d954        feiben/qc-remind    "python main.py"    About a minute ago   Up About a minute                       silly_lewin
+
+$ docker exec -it 7c51baf5d954 /bin/bash 
+root@7c51baf5d954:/app# ls
+Dockerfile  __pycache__  bootstrap.sh  config.py  main.py  qc-remind.log requirements.txt  template  utils
+root@7c51baf5d954:/app# tail -f qc-remind.log
+```
+
 ### 运行效果
 
 ![](./assets/img1.png)
