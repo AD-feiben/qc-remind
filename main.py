@@ -82,6 +82,9 @@ def get_otc_data():
         return res.get('datas')
     except Exception as e:
         logging.error(e)
+        email = config.get('Owner_email')
+        if email is not None:
+            mail.send_mail(email, '请求异常', str(e))
 
 
 def get_mail_content(otc_ad, pay_way_arr):
@@ -136,6 +139,7 @@ def task():
 
         if mail_content != '':
             p['timestamp'] = now
+            print('%s : %s' % (p['email'], mail_content))
             mail.send_mail(p['email'], 'QC 价格 {}'.format(max_price), mail_template.format(mail_content), 'html')
 
 

@@ -10,6 +10,8 @@ Mail_host = Env_mail_host if Env_mail_host is not None else ''
 Mail_user = Env_mail_user if Env_mail_user is not None else ''
 Mail_pass = Env_mail_pass if Env_mail_pass is not None else ''
 
+Owner_email = Mail_user
+
 Persons = [
     {
         'email': Mail_user,
@@ -26,6 +28,6 @@ Persons = [
 
 Scheduler = {
     # 定时任务运行时间
-    'hour': '8-23',
+    'hour': '10-23',
     'minute': '*/1'
 }
