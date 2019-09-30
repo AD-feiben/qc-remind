@@ -139,7 +139,6 @@ def task():
 
         if mail_content != '':
             p['timestamp'] = now
-            print('%s : %s' % (p['email'], mail_content))
             mail.send_mail(p['email'], 'QC 价格 {}'.format(max_price), mail_template.format(mail_content), 'html')
 
 
