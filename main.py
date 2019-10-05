@@ -63,19 +63,10 @@ finally:
     temp_file_obj.close()
 
 
-def get_otc_data():
+def get_otc_data(params):
     headers = {'content-type': 'application/json',
                'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:22.0) Gecko/20100101 Firefox/22.0'}
-    params = {
-        'marketName': 'qc_cny',
-        'type': 1,
-        'numSort': 1,
-        'priceSort': 1,
-        'pageIndex': 1,
-        'pageSize': 10,
-        'amountRange': 0,
-        'limitRange': 0
-    }
+
     try:
         r = requests.get(config.URL, params=params, headers=headers)
         res = json.loads(r.text)
@@ -102,12 +93,41 @@ def get_mail_content(otc_ad, pay_way_arr):
 
 
 def task():
-    res = get_otc_data()
-    if res is None:
-        return
+    res_sell = get_otc_data(
+        params = {
+            'marketName': 'qc_cny',
+            'type': 1,
+            'numSort': 1,
+            'priceSort': 1,
+            'pageIndex': 1,
+            'pageSize': 10,
+            'amountRange': 0,
+            'limitRange': 0
+        }
+    )
+    res_buy = get_otc_data(
+        params = {
+            'marketName': 'qc_cny',
+            'type': 2,
+            'numSort': 1,
+            'priceSort': 2,
+            'pageIndex': 1,
+            'pageSize': 10,
+            'amountRange': 0,
+            'limitRange': 0
+       }
+    )
 
-    otc_ads = res.get('list')
-    max_price = ''
+    otc_sell_ads = res_sell.get('list')
+    otc_buy_ads = res_buy.get('list')
+
+    otc_ads = []
+    if otc_sell_ads is not None:
+        otc_ads.extend(otc_sell_ads)
+    if otc_buy_ads is not None:
+        otc_ads.extend(otc_buy_ads)
+    sell_price = ''
+    buy_price = ''
     now = datetime.now().timestamp()
 
     for p in persons:
@@ -123,6 +143,7 @@ def task():
             pay_way = otc_ad.get('payWay')
             price = otc_ad.get('price')
             f_price = float(price)
+            ad_type = otc_ad.get('type')
 
             pay_way_arr = []
             for pw in pay_way.split(','):
@@ -132,14 +153,21 @@ def task():
             if (person_payways is not None) and (len([val for val in person_payways if val in pay_way_arr]) == 0):
                 continue
 
-            if f_price >= p['higher'] or f_price <= p['lower']:
-                if max_price == '':
-                    max_price = price
+            if (ad_type == 1 and f_price >= p['higher']) or (ad_type == 2 and f_price <= p['lower']):
+                if ad_type == 1 and sell_price == '':
+                    sell_price = price
+                if ad_type == 2 and buy_price == '':
+                    buy_price = price
                 mail_content += get_mail_content(otc_ad, pay_way_arr)
 
         if mail_content != '':
             p['timestamp'] = now
-            mail.send_mail(p['email'], 'QC 价格 {}'.format(max_price), mail_template.format(mail_content), 'html')
+            mail_from = 'QC '
+            if buy_price != '':
+                mail_from += '买入价 {}，'.format(buy_price)
+            if sell_price != '':
+                mail_from += '卖出价 {}'.format(sell_price)
+            mail.send_mail(p['email'], mail_from, mail_template.format(mail_content), 'html')
 
 
 if __name__ == '__main__':
