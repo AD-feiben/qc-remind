@@ -162,11 +162,11 @@ def task():
 
         if mail_content != '':
             p['timestamp'] = now
-            mail_from = 'QC '
+            mail_from = 'QC'
             if buy_price != '':
-                mail_from += '买入价 {}，'.format(buy_price)
+                mail_from += ' 买入价 {}'.format(buy_price)
             if sell_price != '':
-                mail_from += '卖出价 {}'.format(sell_price)
+                mail_from += ' 卖出价 {}'.format(sell_price)
             mail.send_mail(p['email'], mail_from, mail_template.format(mail_content), 'html')
 
 
