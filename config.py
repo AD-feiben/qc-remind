@@ -1,6 +1,6 @@
 import os
 
-URL = 'https://vip.zb.plus/api/web/otc/V1_0_0/getOnlineAdList'
+URL = 'https://vip.zb.live/api/web/otc/V1_0_0/getOnlineAdList'
 
 Env_mail_host = os.environ.get('mail_host')
 Env_mail_user = os.environ.get('mail_user')
@@ -16,13 +16,17 @@ Persons = [
     {
         'email': Mail_user,
         # 小于等于该价格，发送提醒
-        'lower': 0.992,
+        'lower': 0.996,
         # 大于等于该价格，发送提醒
         'higher': 0.998,
         # 发送邮件后 N 分钟内不再发送邮件
         'recheck': 5,
         # 收款方式
-        'payways': ['银行卡', '微信', '支付宝']
+        'payways': ['银行卡', '微信', '支付宝'],
+        # 单独配置任务运行时间，单位为小时
+        'hour': '0-12',
+        # 是否只显示认证商家
+        'authentication': True
     }
 ]
 
