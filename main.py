@@ -42,30 +42,22 @@ def get_otc_data(params):
 
 
 def task():
-    res_sell = get_otc_data(
-        {
-            'marketName': 'qc_cny',
-            'type': 1,
-            'numSort': 1,
-            'priceSort': 1,
-            'pageIndex': 1,
-            'pageSize': 20,
-            'amountRange': 0,
-            'limitRange': 0
-        }
-    )
-    res_buy = get_otc_data(
-        {
-            'marketName': 'qc_cny',
-            'type': 2,
-            'numSort': 1,
-            'priceSort': 2,
-            'pageIndex': 1,
-            'pageSize': 20,
-            'amountRange': 0,
-            'limitRange': 0
-        }
-    )
+    params = {
+        'marketName': 'qc_cny',
+        'type': 1,
+        'numSort': 1,
+        'priceSort': 1,
+        'pageIndex': 1,
+        'pageSize': 10,
+        'amountRange': 0,
+        'limitRange': 0
+    }
+    res_sell = get_otc_data(params)
+
+    params['type'] = 2
+    params['priceSort'] = 2
+
+    res_buy = get_otc_data(params)
 
     otc_sell_ads = res_sell.get('list')
     otc_buy_ads = res_buy.get('list')

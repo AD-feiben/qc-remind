@@ -16,9 +16,9 @@ Persons = [
     {
         'email': Mail_user,
         # 小于等于该价格，发送提醒
-        'lower': 0.996,
+        # 'lower': 0.996,
         # 大于等于该价格，发送提醒
-        'higher': 0.998,
+        'higher': 0.995,
         # 发送邮件后 N 分钟内不再发送邮件
         'recheck': 5,
         # 收款方式
@@ -26,7 +26,7 @@ Persons = [
         # 单独配置任务运行时间，单位为小时
         'hour': '0-12',
         # 是否只显示认证商家
-        'authentication': True
+        'isOnlyAuthBusiness':True
     }
 ]
 

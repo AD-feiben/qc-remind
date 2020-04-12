@@ -72,12 +72,12 @@ class Observer(object):
 
 	def __init__(self, *args, **kwargs):
 		self.email = kwargs['email']
-		self.lower = kwargs['lower']
-		self.higher = kwargs['higher']
-		self.recheck = kwargs['recheck']
-		self.payways = kwargs['payways']
+		self.lower = kwargs.get('lower')
+		self.higher = kwargs.get('higher')
+		self.recheck = 30 if kwargs.get('recheck') is None else kwargs['recheck']
+		self.payways = kwargs.get('payways')
 		self.hour_range = kwargs['hour'].split('-')
-		self.authentication = kwargs['authentication']
+		self.authentication = False if kwargs.get('isOnlyAuthBusiness') is None else kwargs['isOnlyAuthBusiness']
 		self.timestamp = None
 
 	def update(self, ad_list):
@@ -112,20 +112,25 @@ class Observer(object):
 			# 将收付款方式转为文字
 			pay_way_arr = []
 			for pw in ad_pay_way.split(','):
-				pay_way_arr.append(pay_way_dict[pw])
+				if pay_way_dict.get(pw) is not None:
+					pay_way_arr.append(pay_way_dict[pw])
 
 			# 用户付款方式不为空，且与广告中的付款方式不存在交集，则跳过该广告
 			if (self.payways is not None) and (len([val for val in self.payways if val in pay_way_arr]) == 0):
 				continue
 
-			# 卖价符合要求
-			if ad_type == 1 and f_ad_price >= self.higher:
+			if ad_type == 1:
+				# 未设置卖出价或价格未匹配
+				if self.higher is None or f_ad_price < self.higher:
+					continue
 				if sell_price == '':
 					sell_price = f_ad_price
 				content += get_mail_content(ad, pay_way_arr)
 
-			# 买价符合要求
-			if ad_type == 2 and f_ad_price <= self.lower:
+			if ad_type == 2:
+				# 未设置买入价或价格未匹配
+				if self.lower is None or f_ad_price > self.lower:
+					continue
 				if buy_price == '':
 					buy_price = f_ad_price
 				content += get_mail_content(ad, pay_way_arr)
